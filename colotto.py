@@ -6,7 +6,7 @@ from scipy.spatial import distance
 # Función para cargar el dataset
 @st.cache_resource
 def load_data():
-    return pd.read_excel("D:/Colotto/DFseptiembreColotto3.xlsx")
+    return pd.read_excel("DFseptiembreColotto3.xlsx")
 
 # Función principal de Streamlit
 def main():
