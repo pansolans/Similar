@@ -6,7 +6,7 @@ from scipy.spatial import distance
 # Función para cargar el dataset
 @st.cache_resource
 def load_data():
-    return pd.read_excel("D:\\Colotto\\BD\\df2.xlsx")
+    return pd.read_excel("df2.xlsx")
 
 def calculate_mahalanobis_distance(Datos_Ejercicio_4, name):
     # Regularización de la matriz de covarianza
