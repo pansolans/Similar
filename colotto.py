@@ -8,7 +8,7 @@ from scipy.spatial import distance
 def load_data():
     url = "https://raw.githubusercontent.com/pansolans/Similar/main/Colotto_api_septok_conlogos.xlsx"
     return pd.read_excel(url)
-    @st.cache_resource
+    st.cache_resource
 
 
 def calculate_mahalanobis_distance(Datos_Ejercicio_4, name):
