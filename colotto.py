@@ -6,7 +6,7 @@ from scipy.spatial import distance
 # Función para cargar el dataset
 @st.cache_resource
 def load_data():
-    url = "https://raw.githubusercontent.com/pansolans/Similar/main/Colotto_api_septok_conlogos.xlsx"
+    url = "https://raw.githubusercontent.com/pansolans/Similar/main/df24.xlsx"
     return pd.read_excel(url)
     st.cache_resource
 
