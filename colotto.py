@@ -114,8 +114,22 @@ def main():
     if st.session_state.displayed_df is not None:
         if st.button('Exportar a Excel'):
             file_name = 'jugadores_similares.xlsx'  # Define el nombre del archivo aquí
+            
+            # Debug: Print DataFrame
+            st.write("Exportando DataFrame:")
+            st.dataframe(st.session_state.displayed_df)
+            
+            # Debug: Check if file is being created
             export_to_excel(st.session_state.displayed_df, file_name)
-            st.success(f'Archivo exportado como {file_name}')
+            st.write("Archivo exportado como:", file_name)
+            
+            # Provide download link
+            with open(file_name, "rb") as file:
+                btn = st.download_button(label="Descargar Excel",
+                                         data=file,
+                                         file_name=file_name,
+                                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                st.success(f'Archivo listo para descargar: {file_name}')
 
 if __name__ == "__main__":
     main()
