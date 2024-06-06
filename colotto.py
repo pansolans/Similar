@@ -2,12 +2,21 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 from scipy.spatial import distance
+import requests
+from io import BytesIO
 
 # Función para cargar el dataset
 @st.cache_resource
 def load_data():
     url = "https://raw.githubusercontent.com/pansolans/Similar/main/df24.xlsx"
-    return pd.read_excel(url)
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.content
+        df = pd.read_excel(BytesIO(data))
+        return df
+    else:
+        st.error("No se pudo descargar el archivo.")
+        return pd.DataFrame()  # Retorna un DataFrame vacío en caso de error
 
 def calculate_mahalanobis_distance(Datos_Ejercicio_4, name):
     regularization_factor = 1e-4
@@ -25,6 +34,10 @@ def export_to_excel(df, file_name):
 
 def main():
     df = load_data()
+
+    if df.empty:
+        st.warning("No se pudo cargar el archivo de datos.")
+        return
 
     st.sidebar.header("Pampa Fútbol Analytics")
     st.sidebar.header("Filtros")
