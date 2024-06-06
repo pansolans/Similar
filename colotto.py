@@ -8,8 +8,6 @@ from scipy.spatial import distance
 def load_data():
     url = "https://raw.githubusercontent.com/pansolans/Similar/main/df24.xlsx"
     return pd.read_excel(url)
-    st.cache_resource
-
 
 def calculate_mahalanobis_distance(Datos_Ejercicio_4, name):
     regularization_factor = 1e-4
@@ -108,3 +106,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
