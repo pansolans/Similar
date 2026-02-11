@@ -16,7 +16,7 @@ def load_data():
         return df
     else:
         st.error("No se pudo descargar el archivo.")
-        return pd.DataFrame()  # Retorna un DataFrame vacío en caso de error
+        return pd.DataFrame()
 
 def calculate_mahalanobis_distance(Datos_Ejercicio_4, name):
     regularization_factor = 1e-4
@@ -33,6 +33,12 @@ def export_to_excel(df, file_name):
     df.to_excel(file_name, index=False)
 
 def main():
+    # Inicializar session_state
+    if "merged_df" not in st.session_state:
+        st.session_state.merged_df = None
+    if "displayed_df" not in st.session_state:
+        st.session_state.displayed_df = None
+
     df = load_data()
 
     if df.empty:
@@ -88,16 +94,16 @@ def main():
 
     st.header("Jugadores Similares")
 
-    min_age, max_age = st.slider("Minutos jugados:", int(df["minutesOnField"].min()), int(df["minutesOnField"].max()), (int(df["minutesOnField"].min()), int(df["minutesOnField"].max())))
-    post_search_competition_ids = st.multiselect("Seleccionar competitionId para filtrar la tabla:", options=st.session_state.merged_df["competitionId"].unique().tolist())
-
     if st.session_state.merged_df is not None:
+        min_age, max_age = st.slider("Minutos jugados:", int(df["minutesOnField"].min()), int(df["minutesOnField"].max()), (int(df["minutesOnField"].min()), int(df["minutesOnField"].max())))
+        post_search_competition_ids = st.multiselect("Seleccionar competitionId para filtrar la tabla:", options=st.session_state.merged_df["competitionId"].unique().tolist())
+
         filtered_by_age = st.session_state.merged_df[(st.session_state.merged_df["minutesOnField"] >= min_age) & (st.session_state.merged_df["minutesOnField"] <= max_age)]
 
         if post_search_competition_ids:
             filtered_by_age = filtered_by_age[filtered_by_age["competitionId"].isin(post_search_competition_ids)]
 
-        st.session_state.displayed_df = filtered_by_age.head(20)  # Almacena solo los primeros 20 registros
+        st.session_state.displayed_df = filtered_by_age.head(20)
 
         for index, row in st.session_state.displayed_df.iterrows():
             col1, col2, col3 = st.columns([1,3,1])
@@ -113,17 +119,8 @@ def main():
     # Botón para exportar a Excel
     if st.session_state.displayed_df is not None:
         if st.button('Exportar a Excel'):
-            file_name = 'jugadores_similares.xlsx'  # Define el nombre del archivo aquí
-            
-            # Debug: Print DataFrame
-            st.write("Exportando DataFrame:")
-            st.dataframe(st.session_state.displayed_df)
-            
-            # Debug: Check if file is being created
+            file_name = 'jugadores_similares.xlsx'
             export_to_excel(st.session_state.displayed_df, file_name)
-            st.write("Archivo exportado como:", file_name)
-            
-            # Provide download link
             with open(file_name, "rb") as file:
                 btn = st.download_button(label="Descargar Excel",
                                          data=file,
@@ -133,4 +130,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
