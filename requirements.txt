@@ -1,6 +1,6 @@
-streamlit==1.41.0
+streamlit==1.54.0
 pandas
 numpy
 scipy
-
 openpyxl
+
